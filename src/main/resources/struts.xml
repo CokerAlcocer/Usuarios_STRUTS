@@ -15,6 +15,10 @@
         <action name="saveUser" class="com.example.formularios.user.UserAction" method="addUser">
             <result name="success">/index.jsp</result>
         </action>
+
+        <action name="removeUser" class="com.example.formularios.user.UserAction" method="deleteUser">
+            <result name="success">/index.jsp</result>
+        </action>
     </package>
 
 </struts>

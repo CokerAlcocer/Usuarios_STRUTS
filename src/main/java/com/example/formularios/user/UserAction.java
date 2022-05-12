@@ -9,6 +9,7 @@ public class UserAction extends ActionSupport {
     private String nombre, apPaterno, apMaterno, direccion, telefono;
     private int operation = 0;
     private ArrayList<User> users;
+    private String idRem;
 
     // --- Metodos de operacion ---
 
@@ -18,18 +19,34 @@ public class UserAction extends ActionSupport {
         return SUCCESS;
     }
 
+    public String deleteUser() {
+        DaoUser du = new DaoUser();
+        int id;
+        try{
+            id = Integer.parseInt(idRem);
+            if(!du.deleteUser(id)){
+                return ERROR;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        getAllUsers();
+        return SUCCESS;
+    }
+
     public String addUser() {
         DaoUser du = new DaoUser();
         operation = 0;
-        String a_nombre, a_apPaterno, a_apMaterno, a_direccion, a_telefono;
+        String aNombre, aApPaterno, aApMaterno, aDireccion, aTelefono;
 
-        a_nombre = nombre;
-        a_apPaterno = apPaterno;
-        a_apMaterno = apMaterno;
-        a_direccion = direccion;
-        a_telefono = telefono;
+        aNombre = nombre;
+        aApPaterno = apPaterno;
+        aApMaterno = apMaterno;
+        aDireccion = direccion;
+        aTelefono = telefono;
 
-        User u = new User(a_nombre, a_apPaterno, a_apMaterno, a_direccion, a_telefono);
+        User u = new User(aNombre, aApPaterno, aApMaterno, aDireccion, aTelefono);
         if(du.addUser(u)){
             operation = 1;
         }else{
@@ -38,11 +55,6 @@ public class UserAction extends ActionSupport {
         }
 
         getAllUsers();
-        return SUCCESS;
-    }
-
-    public String calcular () {
-        operation = 5;
         return SUCCESS;
     }
 
@@ -102,5 +114,13 @@ public class UserAction extends ActionSupport {
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;
+    }
+
+    public String getIdRem() {
+        return idRem;
+    }
+
+    public void setIdRem(String idRem) {
+        this.idRem = idRem;
     }
 }

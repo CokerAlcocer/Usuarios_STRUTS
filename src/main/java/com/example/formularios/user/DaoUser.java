@@ -58,6 +58,48 @@ public class DaoUser {
         return state;
     }
 
+    public boolean deleteUser(int id) {
+        boolean state = false;
+        try{
+            con = DatabaseConnection.getConnection();
+            String query = "DELETE FROM user WHERE id = ?";
+            pstm = con.prepareStatement(query);
+            pstm.setInt(1, id);
+            state = pstm.executeUpdate() == 1;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection();
+        }
+
+        return state;
+    }
+
+    public User findUserById(int id){
+        User u = new User();
+        try{
+            con = DatabaseConnection.getConnection();
+            String query = "SELECT * FROM user WHERE id = ?";
+            pstm = con.prepareStatement(query);
+            pstm.setInt(1, id);
+            rs = pstm.executeQuery();
+            if (rs.next()){
+                u.setId(id);
+                u.setNombre(rs.getString("nombre"));
+                u.setApPaterno(rs.getString("ap_paterno"));
+                u.setApMaterno(rs.getString("ap_materno"));
+                u.setDireccion(rs.getString("direccion"));
+                u.setTelefono(rs.getString("telefono"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection();
+        }
+
+        return u;
+    }
+
     public void closeConnection() {
         try {
             if (con != null) {
